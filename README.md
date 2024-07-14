@@ -17,6 +17,10 @@ Options:
   --version                Show version information
   -?, -h, --help           Show help and usage information
 ```
+# Installation
+
+You can download pre-build binaries from the Releases page.
+
 
 # Credits
 This Project is inspired by the original [RunDotNetDll](https://github.com/enkomio/RunDotNetDll).
