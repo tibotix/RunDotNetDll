@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.Serialization;
+#if WINDOWS
 using System.Windows.Forms;
+#endif
 using System.CommandLine;
 
 namespace RunDotNetDll
@@ -80,6 +78,7 @@ namespace RunDotNetDll
                 GetFullMethodName(methodBase).Equals(entryPointName, StringComparison.OrdinalIgnoreCase);
         }
 
+#if WINDOWS
         private static Boolean TryRunWindowsForm(String dll, String entryPointName)
         {
             var success = false;
@@ -100,6 +99,7 @@ namespace RunDotNetDll
 
             return success;
         }
+#endif
 
         private static void RunDllMethod(String dll, String entryPointName)
         {
@@ -185,11 +185,12 @@ namespace RunDotNetDll
                     Console.Error.WriteLine("Unable to find file: " + assembly.FullName);
                     context.ExitCode = 2;
                 }
-                
+
 
                 Console.WriteLine("[+] DLL: " + assembly.FullName);
-                if (preloads != null) {
-                    foreach(var preload in preloads)
+                if (preloads != null)
+                {
+                    foreach (var preload in preloads)
                     {
                         Console.Write("[*] Preloading DLL: " + preload.FullName);
                         if (!preload.Exists)
@@ -201,7 +202,8 @@ namespace RunDotNetDll
                         {
                             Assembly.LoadFrom(preload.FullName);
                             Console.WriteLine();
-                        } catch (Exception e)
+                        }
+                        catch (Exception e)
                         {
                             Console.WriteLine(" (error: " + e.ToString() + ")");
                         }
@@ -214,10 +216,14 @@ namespace RunDotNetDll
                 }
                 else
                 {
+#if WINDOWS
                     if (!TryRunWindowsForm(assembly.FullName, method))
                     {
                         RunDllMethod(assembly.FullName, method);
                     }
+#else
+                    RunDllMethod(assembly.FullName, method);
+#endif
 
                     Console.WriteLine("[+] Press Enter to Exit");
                     Console.ReadLine();
@@ -225,6 +231,6 @@ namespace RunDotNetDll
             });
 
             return rootCommand.Invoke(args);
-        }    
+        }
     }
 }

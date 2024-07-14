@@ -2,13 +2,26 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFrameworks>net6.0;net6.0-windows;net7.0;net7.0-windows;net8.0;net8.0-windows</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+  </PropertyGroup>
+
+    <!-- Bedingte PropertyGroup für Windows -->
+  <PropertyGroup Condition="'$(RuntimeIdentifier.StartsWith(`win`))' == 'true'">
     <UseWindowsForms>true</UseWindowsForms>
-    <!--<PublishSingleFile>true</PublishSingleFile>-->
-    <!--<RuntimeIdentifier>win-x64</RuntimeIdentifier> -->
-    <!--<SelfContained>true</SelfContained> -->
+  </PropertyGroup>
+
+  <!-- Bedingte PropertyGroup für Linux -->
+  <PropertyGroup Condition="'$(RuntimeIdentifier.StartsWith(`linux`))' == 'true'">
+    <UseWindowsForms>false</UseWindowsForms>
+  </PropertyGroup>
+
+  <!-- Bedingte PropertyGroup für macOS -->
+  <PropertyGroup Condition="'$(RuntimeIdentifier.StartsWith(`osx`))' == 'true'">
+    <UseWindowsForms>false</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
