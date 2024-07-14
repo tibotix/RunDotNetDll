@@ -1,0 +1,43 @@
+name: Build Release Assets
+
+on:
+  release:
+    types:
+      - created
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: ['linux-x86', 'linux-x64', 'win-x86', 'win-x64']
+        dotnet: [ '6.0', '7.0', '8.0' ]
+    runs-on: ubuntu-latest
+    name: Dotnet ${{ matrix.os }}-${{ matrix.dotnet }} build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        id: setup_dotnet
+        with:
+          dotnet-version: ${{ matrix.dotnet }}
+      - name: Create temporary global.json
+        run: |
+          echo '{"sdk":{"version": "${{ steps.setup_dotnet.outputs.dotnet-version }}"}}' > ./global.json
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build asset
+        run: |
+          mkdir ./output
+          dotnet publish -c Release -o "./output/" -r "${{ matrix.os }}" -f "net${{ matrix.dotnet }}${{ startsWith(matrix.arch, 'win') && '-windows' || '' }}"
+      - name: Compress asset
+        run: zip -r ./output.zip ./output
+      - name: Upload asset
+        uses: shogo82148/actions-upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./output.zip
+          asset_name: RunDotNetDll-${{ matrix.os }}-${{ matrix.dotnet }}.zip
+          asset_content_type: application/gzip
