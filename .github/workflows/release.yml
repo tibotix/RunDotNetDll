@@ -25,9 +25,12 @@ jobs:
           dotnet-version: ${{ matrix.dotnet }}
       - name: Create temporary global.json
         run: |
+          pwd
           echo '{"sdk":{"version": "${{ steps.setup_dotnet.outputs.dotnet-version }}"}}' > ./global.json
+          cat ./global.json
       - name: Build asset
         run: |
+          pwd
           mkdir ./output
           dotnet publish -c Release -o "./output/" -r "${{ matrix.os }}" -f "net${{ matrix.dotnet }}${{ startsWith(matrix.arch, 'win') && '-windows' || '' }}"
       - name: Compress asset
