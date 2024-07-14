@@ -5,7 +5,7 @@ Description:
   -= Run a specific method of a .NET Assembly =-
 
 Usage:
-  cli <assembly> [<method>] [options]
+  RunDotNetDll <assembly> [<method>] [options]
 
 Arguments:
   <assembly>  The Assembly to run.
