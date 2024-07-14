@@ -11,6 +11,7 @@
 
     <!-- Bedingte PropertyGroup für Windows -->
   <PropertyGroup Condition="'$(RuntimeIdentifier.StartsWith(`win`))' == 'true'">
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
