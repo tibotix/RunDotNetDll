@@ -28,14 +28,14 @@ jobs:
           echo '{"sdk":{"version": "${{ steps.setup_dotnet.outputs.dotnet-version }}"}}' > ./global.json
       - name: Build asset
         run: |
-          mkdir ./output
-          dotnet publish -c Release -o "./output/" -r "${{ matrix.os }}" -f "net${{ matrix.dotnet }}${{ startsWith(matrix.os, 'win') && '-windows' || '' }}"
+          mkdir ./bin
+          dotnet publish -c Release -o "./bin/" -r "${{ matrix.os }}" -f "net${{ matrix.dotnet }}${{ startsWith(matrix.os, 'win') && '-windows' || '' }}"
       - name: Compress asset
-        run: zip -r ./output.zip ./output
+        run: zip -r ./output.zip ./bin
       - name: Upload asset
         uses: shogo82148/actions-upload-release-asset@v1
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: ./output.zip
-          asset_name: RunDotNetDll-${{ matrix.os }}-${{ matrix.dotnet }}.zip
+          asset_name: RunDotNetDll-${{ matrix.os }}-net${{ matrix.dotnet }}.zip
           asset_content_type: application/gzip

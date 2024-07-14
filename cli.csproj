@@ -9,18 +9,15 @@
     <PublishSingleFile>true</PublishSingleFile>
   </PropertyGroup>
 
-    <!-- Bedingte PropertyGroup für Windows -->
   <PropertyGroup Condition="'$(RuntimeIdentifier.StartsWith(`win`))' == 'true'">
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
-  <!-- Bedingte PropertyGroup für Linux -->
   <PropertyGroup Condition="'$(RuntimeIdentifier.StartsWith(`linux`))' == 'true'">
     <UseWindowsForms>false</UseWindowsForms>
   </PropertyGroup>
 
-  <!-- Bedingte PropertyGroup für macOS -->
   <PropertyGroup Condition="'$(RuntimeIdentifier.StartsWith(`osx`))' == 'true'">
     <UseWindowsForms>false</UseWindowsForms>
   </PropertyGroup>
