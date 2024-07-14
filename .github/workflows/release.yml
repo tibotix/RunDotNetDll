@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: ['linux-x86', 'linux-x64', 'win-x86', 'win-x64']
+        os: ['linux-x64', 'win-x86', 'win-x64', 'osx-x64']
         dotnet: [ '6.0', '7.0', '8.0' ]
     runs-on: ubuntu-latest
     name: Dotnet ${{ matrix.os }}-net${{ matrix.dotnet }} build
