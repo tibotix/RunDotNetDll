@@ -16,26 +16,32 @@ jobs:
         dotnet: [ '6.0', '7.0', '8.0' ]
     runs-on: ubuntu-latest
     name: Dotnet ${{ matrix.os }}-net${{ matrix.dotnet }} build
+    env:
+      OutputName: "RunDotNetDll-${{ matrix.os }}-net${{ matrix.dotnet }}"
     steps:
       - uses: actions/checkout@v4
       - name: Setup dotnet
         uses: actions/setup-dotnet@v4
         id: setup_dotnet
         with:
-          dotnet-version: '8.0'
+          dotnet-version: ${{ matrix.dotnet }}
       - name: Create temporary global.json
         run: |
           echo '{"sdk":{"version": "${{ steps.setup_dotnet.outputs.dotnet-version }}"}}' > ./global.json
+      - name: Set TargetFrameworks
+        run: |
+          sed -i -E '/<TargetFrameworks>/s/>.*?</>net${{ matrix.dotnet }};net${{ matrix.dotnet }}-windows</' RunDotNetDll.csproj
+          cat RunDotNetDll.csproj
       - name: Build asset
         run: |
-          mkdir ./bin
-          dotnet publish -c Release -o "./bin/" -r "${{ matrix.os }}" -f "net${{ matrix.dotnet }}${{ startsWith(matrix.os, 'win') && '-windows' || '' }}"
+          mkdir "./${{ env.OutputName }}"
+          dotnet publish -c Release -o "./${{ env.OutputName }}" -r "${{ matrix.os }}" -f "net${{ matrix.dotnet }}${{ startsWith(matrix.os, 'win') && '-windows' || '' }}"
       - name: Compress asset
-        run: zip -r ./output.zip ./bin
+        run: zip -r ./output.zip "./${{ env.OutputName }}"
       - name: Upload asset
         uses: shogo82148/actions-upload-release-asset@v1
         with:
           upload_url: ${{ github.event.release.upload_url }}
           asset_path: ./output.zip
-          asset_name: RunDotNetDll-${{ matrix.os }}-net${{ matrix.dotnet }}.zip
+          asset_name: "${{ env.OutputName }}.zip"
           asset_content_type: application/gzip
