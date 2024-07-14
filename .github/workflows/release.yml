@@ -15,7 +15,7 @@ jobs:
         os: ['linux-x86', 'linux-x64', 'win-x86', 'win-x64']
         dotnet: [ '6.0', '7.0', '8.0' ]
     runs-on: ubuntu-latest
-    name: Dotnet ${{ matrix.os }}-${{ matrix.dotnet }} build
+    name: Dotnet ${{ matrix.os }}-net${{ matrix.dotnet }} build
     steps:
       - uses: actions/checkout@v4
       - name: Setup dotnet
@@ -26,8 +26,6 @@ jobs:
       - name: Create temporary global.json
         run: |
           echo '{"sdk":{"version": "${{ steps.setup_dotnet.outputs.dotnet-version }}"}}' > ./global.json
-      - name: Install dependencies
-        run: dotnet restore
       - name: Build asset
         run: |
           mkdir ./output
