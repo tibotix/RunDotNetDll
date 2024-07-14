@@ -160,7 +160,7 @@ namespace RunDotNetDll
 
             var assemblyArgument = new Argument<FileInfo>("assembly", "The Assembly to run.");
             var methodArgument = new Argument<string>(name: "method",
-                description: "The method to call. You can specify the metadata token too. eg: Mynaspace.MyClass.EntryPoint or @0x06000001",
+                description: "The method to call. You can specify the metadata token too. eg: Mynamespace.MyClass.EntryPoint or @0x06000001",
                 getDefaultValue: () => "");
             var rootCommand = new RootCommand("-= Run a specific method of a .NET Assembly =-")
             {

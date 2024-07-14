@@ -10,7 +10,7 @@ Usage:
 Arguments:
   <assembly>  The Assembly to run.
   <method>    The method to call. You can specify the metadata token too. eg: 
-              Mynaspace.MyClass.EntryPoint or @0x06000001 []
+              Mynamespace.MyClass.EntryPoint or @0x06000001 []
 
 Options:
   -p, --preload <preload>  An assembly to preload.
