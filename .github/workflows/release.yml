@@ -29,7 +29,7 @@ jobs:
       - name: Build asset
         run: |
           mkdir ./output
-          dotnet publish -c Release -o "./output/" -r "${{ matrix.os }}" -f "net${{ matrix.dotnet }}${{ startsWith(matrix.arch, 'win') && '-windows' || '' }}"
+          dotnet publish -c Release -o "./output/" -r "${{ matrix.os }}" -f "net${{ matrix.dotnet }}${{ startsWith(matrix.os, 'win') && '-windows' || '' }}"
       - name: Compress asset
         run: zip -r ./output.zip ./output
       - name: Upload asset
